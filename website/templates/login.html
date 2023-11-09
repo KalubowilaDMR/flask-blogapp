@@ -1,0 +1,24 @@
+{% extends "base.html" %}{% block title %} Login {% endblock %}
+{% block content %}
+
+    <div class="container">
+        <form action="#" method="post">
+            <h3 align="center">Login</h3>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" name="email" id="email" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" name="password" id="password" class="form-control">
+            </div>
+            <div align="center" class="mb-3">
+                <button type="submit" class="btn btn-primary w-50">Login</button>
+            </div>
+            <div>
+                <p align="center">Don't have an account ? <a href="{{url_for('auth.sign_up')}}">signup</a></p>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

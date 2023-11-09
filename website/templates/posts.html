@@ -1,0 +1,29 @@
+{% extends "post_div.html" %}{% block title %} Home {% endblock %}{% block pageTitle %} Hi! This is {{ username }}'s posts page {% endblock %}
+{% block pageHeader %}
+    {% if user.username != username %}
+        <div class="create-post mt-4">
+            <a href="/">
+                <button type="button" class="btn btn-danger btn-md shadow-lg">
+                    Back
+                </button>
+            </a>
+        </div>    
+    {% else %}
+        <div class="d-flex justify-content-between">
+            <div class="create-post mt-4">
+                <a href="/home">
+                    <button type="button" class="btn btn-primary btn-md shadow-lg">
+                        Create Post
+                    </button>
+                </a>
+            </div>
+            <div class="create-post mt-4">
+                <a href="/home">
+                    <button type="button" class="btn btn-danger btn-md shadow-lg">
+                        Back
+                    </button>
+                </a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

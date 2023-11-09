@@ -1,0 +1,101 @@
+{% extends "base.html" %}{% block title %} Post Div{% endblock %}
+{% block content %}
+
+    <h2 align="center">
+        {% block pageTitle %}{% endblock %}
+    </h2>    
+    
+   <div>
+       {% block pageHeader %}{% endblock %}
+   </div>
+    
+    
+        <div class="posts mt-4">
+            {% for post in posts %}
+                <div class="card border-dark my-3 shadow-lg">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <a href="/post/{{ post.user.username }}" class="text-decoration-none fw-bold">{{ post.user.username }}'s posts</a>
+                        {% if user.id == post.author %}
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/delete-post/{{ post.id }}" class="dropdown-item">Delete</a></li>
+                                    <!-- <li><a href="#" class="dropdown-item"></a></li> -->
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <div class="card-text mb-3">{{ post.text }}</div>
+                        <div class="card p-2">
+                            <div class="card-body p-1">
+                                <div class="collapse" id="comments-{{post.id}}">
+                                    {% for comment in post.comments %}
+                                        <ul>
+                                            <li>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <strong>
+                                                            <a href="/post/{{ comment.user.username}}" class="text-success">
+                                                                {% if comment.user.username == current_user.username %}
+                                                                    You
+                                                                {% else %}
+                                                                    {{ comment.user.username }}
+                                                                {% endif %}
+                                                            </a>
+                                                        </strong>
+                                                        - {{ comment.text }}
+                                                    </div>
+                                                    <div class="block">
+                                                        {% if user.id == comment.author %}
+                                                            <small class="m-2"><a href="/delete-comment/{{ comment.id }}" class="text-danger text-decoration-none del">Delete</a></small>
+                                                        {% endif %}
+                                                        {{ comment.date_created }}
+                                                    </div>
+                                                </div>                                            
+                                            </li>
+                                        </ul>
+                                    {% endfor %}
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center my-2 border border-start-0 border-end-0  px-4">
+                                    <div class="border-end-1 border-bottom-0 border-top-0 border-start-0 w-50 border">
+                                        <p class="card-text text-warning my-2 d-flex align-items-center"> 
+                                            {% if user.id in post.likes|map(attribute="author")|list %}
+                                                <i class="bi bi-hand-thumbs-up-fill" id="like-button-{{post.id}}"  onclick="like( {{ post.id }})"></i>
+                                            {% else %}
+                                                <i class="bi bi-hand-thumbs-up" id="like-button-{{post.id}}"  onclick="like( {{ post.id }})"></i>                               
+                                            {% endif %}
+                                            
+                                            <span class="me-1" id="like-count-{{post.id}}"><b>{{ post.likes | length }} </b></span> Likes
+                                        </p>
+                                    </div>
+                                    <div>
+                                        {% if post.comments|length >0 %}
+                                            <a class=" text-warning text-decoration-none py-1 user-select-none" data-bs-toggle="collapse" href="#comments-{{post.id}}">
+                                                View {{ post.comments|length }} Comments
+                                            </a>
+                                        {% else %}
+                                            <p class="card-text text-warning my-2 user-select-none">No Comments</p>
+                                        {% endif %} 
+                                    </div>                                    
+                                </div>                                
+                                <form action="/create-comment/{{ post.id }}" method="post" class="input-group">
+                                    <input type="text" name="comment" class="form-control text-decoration-none bg-secondary-subtle" placeholder="type your comment ...">
+                                    <button type="submit" class="btn btn-success">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-fill" viewBox="0 0 16 16">
+                                            <path d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9.06 9.06 0 0 0 8 15z"/>
+                                          </svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted user-select-none">
+                        {{ post.date_created }}
+                    </div>
+                </div>            
+            {% endfor %}
+        </div>
+    
+
+{% endblock %}

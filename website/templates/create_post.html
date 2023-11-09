@@ -1,0 +1,25 @@
+{% extends "base.html" %}{% block title %} Create Post {% endblock %}
+{% block content %}
+
+    <h2 align="center" class="mb-3">Make a new Post</h2>
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5>Create New Post</h5>
+            <a href="/">
+                <button type="button" class="btn btn-danger">Back</button>
+            </a>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                <div class="d-grid gap-4">
+                    <h6 class="card-title">Type your post data</h6>
+                    <textarea class="form-control" name="text" id="text" cols="30" rows="10"></textarea>
+                    <button type="submit" class="btn btn-primary">Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+
+{% endblock %}
